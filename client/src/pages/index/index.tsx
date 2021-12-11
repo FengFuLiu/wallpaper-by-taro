@@ -1,14 +1,13 @@
-import { useState } from 'react';
 import { View } from '@tarojs/components';
 import Login from '../../components/login/index.weapp';
-import { Button } from '@taroify/core';
+import { useModel } from 'foca';
+import { counterModel } from 'src/redux/models/counter/counterModel';
 
 export default function Index() {
-  const [count, setCount] = useState(0);
-
+  const count = useModel(counterModel, state => state.count);
+  console.log(count, 'count');
   return (
     <View>
-      <Button>sddsssss</Button>
       <Login />
     </View>
   );
