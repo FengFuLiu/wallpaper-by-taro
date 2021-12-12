@@ -30,26 +30,39 @@ export interface PixabeyResponse {
   hits: IHit[];
 }
 
+export type RequestProps = {
+  q: string,
+  page: number,
+  image_type: "all" | "photo" | "illustration" | "vector",
+  orientation: "all" | "horizontal" | "vertical",
+  category: 'backgrounds' | 'fashion' | 'nature' | 'science' | 'education' | 'feelings' | 'health' | 'people' | 'religion' | 'places' | 'animals' | 'industry' | 'computer' | 'food' | 'sports' | 'transportation' | 'travel' | 'buildings' | 'business' | 'music',
+  colors: "grayscale" | "transparent" | "red" | "orange" | "yellow" | "green" | "turquoise" | "blue" | "lilac" | "pink" | "white" | "gray" | "black" | "brown"
+}
+
 const initialState = {
   total: 0,
   totalHits: 0,
-  hits: []
+  hits: [] as IHit[]
 };
 
 export const pixabeyModel = defineModel("pixabey", {
   initialState,
   effects: {
-    async getListInfo() {
+    async getListInfo(params: Partial<RequestProps>) {
       const res = await Taro.cloud
         .callFunction({
           name: 'quickstartFunctions',
           data: {
             type: 'getPixabayImage',
-            q: '东京',
+            ...params
           },
         });
-      console.log("userInfo=", res);
-      // this.dispatch(res);
+      const { hits, total, totalHits } = res.result as PixabeyResponse
+      this.dispatch((state) => {
+        state.total = total;
+        state.totalHits = totalHits;
+        state.hits = [...state.hits, ...hits];
+      });
     }
   }
 });

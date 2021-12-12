@@ -9,19 +9,20 @@
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "outDir": "lib",
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "rootDir": ".",
     "jsx": "preserve",
-    "jsxFactory": "Taro.createElement",
     "allowJs": true,
-    "noImplicitThis": true,
     "resolveJsonModule": true,
+    "jsxFactory": "Taro.createElement",
+    "noImplicitThis": true,
     "typeRoots": ["node_modules/@types", "global.d.ts"]
   },
+  "include": ["./src", "global.d.ts"],
   "exclude": ["node_modules", "dist"],
   "compileOnSave": false
 }
