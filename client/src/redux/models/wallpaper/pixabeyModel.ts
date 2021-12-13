@@ -1,5 +1,6 @@
-import Taro from '@tarojs/taro';
-import { defineModel } from "foca";
+import Taro from '@tarojs/taro'
+import { defineModel } from 'foca'
+
 type IHit = {
   id: number;
   pageURL: string;
@@ -49,15 +50,14 @@ export const pixabeyModel = defineModel("pixabey", {
   initialState,
   effects: {
     async getListInfo(params: Partial<RequestProps>) {
-      const res = await Taro.cloud
-        .callFunction({
-          name: 'quickstartFunctions',
-          data: {
-            type: 'getPixabayImage',
-            ...params
-          },
-        });
-      const { hits, total, totalHits } = res.result as PixabeyResponse
+      const res = await Taro.cloud.callFunction({
+        name: 'quickstartFunctions',
+        data: {
+          type: 'getPixabayImage',
+          ...params
+        },
+      });
+      const { hits, total , totalHits } = res.result as PixabeyResponse
       this.dispatch((state) => {
         state.total = total;
         state.totalHits = totalHits;

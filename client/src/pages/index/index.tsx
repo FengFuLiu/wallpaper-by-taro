@@ -1,11 +1,13 @@
-import { View } from '@tarojs/components';
-import { Button, Search, Image, List, Loading } from '@taroify/core';
-import { useLoading, useModel } from 'foca';
-import { pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel';
-import { useCallback, useEffect, useState } from 'react';
-import './index.scss';
-import { useBoolean } from '../../utils/hooks';
-import Taro, { usePageScroll } from '@tarojs/taro';
+import './index.scss'
+
+import Taro, { usePageScroll } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { Button, Image, List, Loading, Search } from '@taroify/core'
+import { useLoading, useModel } from 'foca'
+import { useCallback, useEffect, useState } from 'react'
+
+import { pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel'
+import { useBoolean } from '../../utils/hooks'
 
 const isEven = (num: number) => num % 2 == 0;
 
@@ -16,11 +18,11 @@ export default function Index() {
   const [searchValue, setSearchValue] = useState('');
   const [requestParams, setRequestParams] = useState<Partial<RequestProps>>({
     page: 1,
-  });
+  }); 
   const [scrollTop, setScrollTop] = useState(0);
+  
   usePageScroll(({ scrollTop: aScrollTop }) => setScrollTop(aScrollTop));
-  console.log(data);
-  const updateParams = useCallback((params: Partial<RequestProps>) => {
+  console.log(data); const updateParams = useCallback((params: Partial<RequestProps>) => {
     const newParam = { page: 1, ...params };
     setRequestParams(oldParam => ({ ...oldParam, ...newParam }));
   }, []);
@@ -34,7 +36,7 @@ export default function Index() {
   );
 
   const handleScrollBottom = useCallback(() => {
-    updateParams({ page: (requestParams.page ?? 0) + 1 });
+    // updateParams({ page: (requestParams.page ?? 0) + 1 });
   }, []);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function Index() {
   }, [requestParams]);
 
   return (
-    <View>
+    <View className="basePage">
       <Search
         value={searchValue}
         placeholder="输入想搜索的关键词"
@@ -54,18 +56,18 @@ export default function Index() {
       />
       <List
         scrollTop={scrollTop}
-        // immediateCheck={false}
         loading={loading}
         hasMore={hasMore}
         onLoad={handleScrollBottom}
       >
         <View className="masonry">
+          {/* {Boolean(data.length) && data.map(item => {
+            return <></>
+          })} */}
           <View className="column">
             {Boolean(data.length) &&
               data
-                .filter((_, index) => isEven(index))
-                .map(({ webformatURL, id }) => (
-                  <Image
+                .filter((_, index) => isEven(index)).map(({ webformatURL, id }) => (  <Image
                     className="item"
                     mode="widthFix"
                     key={id}
