@@ -7,5 +7,7 @@
     "tarojs",
     "weapp",
     "webformat"
-  ]
+  ],
+  "prettier.requireConfig": true,
+  "prettier.prettierPath": "file:///c%3A/project/wallpaper/.prettierrc"
 }
