@@ -1,14 +1,14 @@
-import './index.scss';
+import './index.scss'
 
-import Taro, { usePageScroll } from '@tarojs/taro';
-import { View } from '@tarojs/components';
-import { LikeOutlined, InfoOutlined } from '@taroify/icons';
-import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core';
-import { useLoading, useModel } from 'foca';
-import { useCallback, useEffect, useState } from 'react';
+import Taro, { usePageScroll } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { InfoOutlined, LikeOutlined } from '@taroify/icons'
+import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core'
+import { useLoading, useModel } from 'foca'
+import { useCallback, useEffect, useState } from 'react'
 
-import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel';
-import { useBoolean } from '../../utils/hooks';
+import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel'
+import { useBoolean } from '../../utils/hooks'
 
 export default function Index() {
   const data = useModel(pixabeyModel, ({ hits }) => hits);
