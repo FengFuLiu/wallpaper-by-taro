@@ -1,14 +1,15 @@
-import './index.scss'
+import './index.scss';
 
-import Taro, { usePageScroll } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { InfoOutlined, LikeOutlined } from '@taroify/icons'
-import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core'
-import { useLoading, useModel } from 'foca'
-import { useCallback, useEffect, useState } from 'react'
+import Taro, { usePageScroll } from '@tarojs/taro';
+import { View } from '@tarojs/components';
+import { InfoOutlined, LikeOutlined } from '@taroify/icons';
+import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core';
+import { useLoading, useModel } from 'foca';
+import { useCallback, useEffect, useState } from 'react';
+import { throttle } from 'lodash';
 
-import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel'
-import { useBoolean } from '../../utils/hooks'
+import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel';
+import { useBoolean } from '../../utils/hooks';
 
 export default function Index() {
   const data = useModel(pixabeyModel, ({ hits }) => hits);
@@ -51,7 +52,7 @@ export default function Index() {
 
   const handleScrollBottom = useCallback(() => {
     !isFirstRequest && updateParams({ page: (requestParams.page ?? 0) + 1 });
-  }, [isFirstRequest]);
+  }, [isFirstRequest, requestParams.page]);
 
   useEffect(() => {
     pixabeyModel.getListInfo(requestParams);
@@ -69,7 +70,12 @@ export default function Index() {
           updateSearchVal('');
         }}
       />
-      <List scrollTop={scrollTop} loading={loading} hasMore={hasMore} onLoad={handleScrollBottom}>
+      <List
+        scrollTop={scrollTop}
+        loading={loading}
+        hasMore={hasMore}
+        onLoad={throttle(handleScrollBottom, 2000)}
+      >
         <View className="masonry">
           {Boolean(data.length) &&
             data.map((item) => (
@@ -84,8 +90,8 @@ export default function Index() {
                 <View className="content">
                   <LikeOutlined />
                   <InfoOutlined />
-                  {[...item.tags].map((tag) => (
-                    <Tag>{tag}</Tag>
+                  {item.tags.split(',').map((tag) => (
+                    <Tag>{tag.trim()}</Tag>
                   ))}
                 </View>
               </View>

@@ -1,21 +1,17 @@
 .basePage {
   width: 100%;
   .masonry {
-    column-count: 2;
-    -moz-column-count: 2; /* Firefox */
-    -webkit-column-count: 2;
-    // column-gap: 10rpx;
-    // -moz-column-gap: 10rpx;
-    // -webkit-column-gap: 10rpx;
-    width: 100%;
+    padding: 0rpx 20rpx;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     .item {
       overflow: hidden;
-      width: 50vw;
-      break-inside: avoid;
       box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
       border-radius: 8px;
+      width: calc((100% - 20rpx) / 2);
+      display: inline-block;
       .image {
-        width: 100%;
         border-radius: 8px;
         height: auto;
       }
