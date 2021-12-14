@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { defineModel } from 'foca'
 
-type IHit = {
+export type IHit = {
   id: number;
   pageURL: string;
   type: string;
@@ -57,7 +57,7 @@ export const pixabeyModel = defineModel("pixabey", {
           ...params
         },
       });
-      const { hits, total , totalHits } = res.result as PixabeyResponse
+      const { hits, total, totalHits } = res.result as PixabeyResponse
       this.dispatch((state) => {
         state.total = total;
         state.totalHits = totalHits;

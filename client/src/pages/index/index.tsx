@@ -2,27 +2,28 @@ import './index.scss';
 
 import Taro, { usePageScroll } from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import { Button, Image, List, Loading, Search } from '@taroify/core';
+import { LikeOutlined, InfoOutlined } from '@taroify/icons';
+import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core';
 import { useLoading, useModel } from 'foca';
 import { useCallback, useEffect, useState } from 'react';
 
-import { pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel';
+import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel';
 import { useBoolean } from '../../utils/hooks';
-
-const isEven = (num: number) => num % 2 == 0;
 
 export default function Index() {
   const data = useModel(pixabeyModel, ({ hits }) => hits);
   const loading = useLoading(pixabeyModel.getListInfo);
+  const [isFirstRequest, setIsFirstRequest] = useState(true);
   const [hasMore, setHasMoreTrue, setHasMoreFalse] = useBoolean(true);
+  const [isShowPopup, showPopup, hidePopup] = useBoolean(false);
   const [searchValue, setSearchValue] = useState('');
+  const [currentCardInfo, setCurrentCardInfo] = useState<IHit>();
   const [requestParams, setRequestParams] = useState<Partial<RequestProps>>({
     page: 1,
   });
   const [scrollTop, setScrollTop] = useState(0);
-
   usePageScroll(({ scrollTop: aScrollTop }) => setScrollTop(aScrollTop));
-  console.log(data);
+
   const updateParams = useCallback((params: Partial<RequestProps>) => {
     const newParam = {
       page: 1,
@@ -44,12 +45,17 @@ export default function Index() {
     [updateParams]
   );
 
+  const handleCardClick = (item: IHit) => {
+    setCurrentCardInfo(item);
+  };
+
   const handleScrollBottom = useCallback(() => {
-    // updateParams({ page: (requestParams.page ?? 0) + 1 });
-  }, []);
+    !isFirstRequest && updateParams({ page: (requestParams.page ?? 0) + 1 });
+  }, [isFirstRequest]);
 
   useEffect(() => {
     pixabeyModel.getListInfo(requestParams);
+    setIsFirstRequest(false);
   }, [requestParams]);
 
   return (
@@ -63,50 +69,34 @@ export default function Index() {
           updateSearchVal('');
         }}
       />
-      <List
-        scrollTop={scrollTop}
-        loading={loading}
-        hasMore={hasMore}
-        onLoad={handleScrollBottom}
-      >
+      <List scrollTop={scrollTop} loading={loading} hasMore={hasMore} onLoad={handleScrollBottom}>
         <View className="masonry">
-          {/* {Boolean(data.length) && data.map(item => {
-            return <></>
-          })} */}
-          <View className="column">
-            {Boolean(data.length) &&
-              data
-                .filter((_, index) => isEven(index))
-                .map(({ webformatURL, id }) => (
-                  <Image
-                    className="item"
-                    mode="widthFix"
-                    key={id}
-                    lazyLoad
-                    src={webformatURL}
-                  />
-                ))}
-          </View>
-          <View className="column">
-            {Boolean(data.length) &&
-              data
-                .filter((_, index) => !isEven(index))
-                .map(({ webformatURL, id }) => (
-                  <Image
-                    className="item"
-                    mode="widthFix"
-                    key={id}
-                    lazyLoad
-                    src={webformatURL}
-                  />
-                ))}
-          </View>
+          {Boolean(data.length) &&
+            data.map((item) => (
+              <View
+                className="item"
+                key={item.id}
+                onClick={() => {
+                  handleCardClick(item);
+                }}
+              >
+                <Image className="image" mode="widthFix" lazyLoad src={item.webformatURL} />
+                <View className="content">
+                  <LikeOutlined />
+                  <InfoOutlined />
+                  {[...item.tags].map((tag) => (
+                    <Tag>{tag}</Tag>
+                  ))}
+                </View>
+              </View>
+            ))}
         </View>
         <List.Placeholder>
           {loading && <Loading>加载中...</Loading>}
           {!hasMore && '没有更多了'}
         </List.Placeholder>
       </List>
+      <Popup open={isShowPopup} rounded placement="bottom" style={{ height: '30%' }}></Popup>
     </View>
   );
 }
