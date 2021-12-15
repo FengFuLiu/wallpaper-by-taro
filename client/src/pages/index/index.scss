@@ -2,14 +2,13 @@
   width: 100%;
   .masonry {
     padding: 0rpx 20rpx;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    position: relative;
     .item {
+      position: absolute;
       overflow: hidden;
       box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
       border-radius: 8px;
-      width: calc((100% - 20rpx) / 2);
+      // width: calc((100% - 20rpx) / 2);
       display: inline-block;
       .image {
         border-radius: 8px;

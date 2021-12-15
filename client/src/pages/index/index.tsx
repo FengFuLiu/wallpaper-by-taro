@@ -1,15 +1,15 @@
-import './index.scss';
+import './index.scss'
 
-import Taro, { usePageScroll } from '@tarojs/taro';
-import { View } from '@tarojs/components';
-import { InfoOutlined, LikeOutlined } from '@taroify/icons';
-import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core';
-import { useLoading, useModel } from 'foca';
-import { useCallback, useEffect, useState } from 'react';
-import { throttle } from 'lodash';
+import Taro, { pxTransform, usePageScroll } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { InfoOutlined, LikeOutlined } from '@taroify/icons'
+import { Button, Image, List, Loading, Popup, Search, Tag } from '@taroify/core'
+import { useLoading, useModel } from 'foca'
+import { useCallback, useEffect, useState } from 'react'
+import { throttle } from 'lodash'
 
-import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel';
-import { useBoolean } from '../../utils/hooks';
+import { IHit, pixabeyModel, RequestProps } from '../../redux/models/wallpaper/pixabeyModel'
+import { useBoolean } from '../../utils/hooks'
 
 export default function Index() {
   const data = useModel(pixabeyModel, ({ hits }) => hits);
@@ -51,7 +51,7 @@ export default function Index() {
   };
 
   const handleScrollBottom = useCallback(() => {
-    !isFirstRequest && updateParams({ page: (requestParams.page ?? 0) + 1 });
+    // !isFirstRequest && updateParams({ page: (requestParams.page ?? 0) + 1 });
   }, [isFirstRequest, requestParams.page]);
 
   useEffect(() => {
@@ -80,6 +80,7 @@ export default function Index() {
           {Boolean(data.length) &&
             data.map((item) => (
               <View
+                style={{ left: item.left, top: item.top, width: item.masonryWidth }}
                 className="item"
                 key={item.id}
                 onClick={() => {
@@ -90,8 +91,8 @@ export default function Index() {
                 <View className="content">
                   <LikeOutlined />
                   <InfoOutlined />
-                  {item.tags.split(',').map((tag) => (
-                    <Tag>{tag.trim()}</Tag>
+                  {item.tagList.map((tag) => (
+                    <Tag>{tag}</Tag>
                   ))}
                 </View>
               </View>
