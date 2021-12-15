@@ -1,25 +1,26 @@
 .basePage {
   width: 100%;
   .masonry {
-    padding: 0rpx 20rpx;
     position: relative;
     .item {
       position: absolute;
       overflow: hidden;
       box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
       border-radius: 8px;
-      // width: calc((100% - 20rpx) / 2);
       display: inline-block;
       .image {
         border-radius: 8px;
         height: auto;
       }
       .content {
-        height: 50px;
         background-color: #fff;
         width: 100%;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+        .tag {
+          margin-right: 4px;
+        }
       }
     }
   }

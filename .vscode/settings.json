@@ -1,6 +1,16 @@
 {
-  "cSpell.words": ["foca", "Pixabay", "pixabey", "taroify", "tarojs", "weapp", "webformat"],
+  "cSpell.words": [
+    "foca",
+    "Parens",
+    "Pixabay",
+    "pixabey",
+    "taroify",
+    "tarojs",
+    "weapp",
+    "webformat"
+  ],
   "editor.formatOnSave": true,
   "prettier.requireConfig": true,
-  "prettier.prettierPath": "file:///c%3A/project/wallpaper/.prettierrc"
+  "prettier.prettierPath": "file:///c%3A/project/wallpaper/.prettierrc",
+  "importBeautify.beautifyOnSave": false
 }
