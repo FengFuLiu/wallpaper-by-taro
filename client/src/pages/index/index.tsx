@@ -1,12 +1,12 @@
-import './index.scss'
+import './index.scss';
 
-import Taro, { pxTransform, usePageScroll } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { InfoOutlined, LikeOutlined } from '@taroify/icons'
-import { Button, Image, List, Loading, Popup, Search, Tag, Transition } from '@taroify/core'
-import { useLoading, useModel } from 'foca'
-import { useCallback, useEffect, useState } from 'react'
-import { throttle } from 'lodash'
+import Taro, { pxTransform, usePageScroll } from '@tarojs/taro';
+import { View } from '@tarojs/components';
+import { InfoOutlined, LikeOutlined } from '@taroify/icons';
+import { Button, Image, List, Loading, Popup, Search, Tag, Transition } from '@taroify/core';
+import { useLoading, useModel } from 'foca';
+import { useCallback, useEffect, useState } from 'react';
+import { throttle } from 'lodash';
 
 import {
   CONTENT_FONT_SIZE,
@@ -14,8 +14,8 @@ import {
   LINE_HEIGHT,
   pixabeyModel,
   RequestProps,
-} from '../../redux/models/wallpaper/pixabeyModel'
-import { useBoolean } from '../../utils/hooks'
+} from '../../redux/models/wallpaper/pixabeyModel';
+import { useBoolean } from '../../utils/hooks';
 
 export default function Index() {
   const data = useModel(pixabeyModel);
@@ -85,33 +85,28 @@ export default function Index() {
         <View className="masonry" style={{ height: data.parentHeight }}>
           {Boolean(data.hits.length) &&
             data.hits.map(item => (
-              <Transition in={true} name="fade">
+              <View
+                style={{ left: item.left, top: item.top, width: item.masonryWidth }}
+                className="item"
+                key={item.id}
+                onClick={() => {
+                  handleCardClick(item);
+                }}
+              >
+                <Image className="image" mode="widthFix" src={item.previewURL} />
                 <View
-                  style={{ left: item.left, top: item.top, width: item.masonryWidth }}
-                  className="item"
-                  key={item.id}
-                  onClick={() => {
-                    handleCardClick(item);
+                  className="content"
+                  style={{
+                    fontSize: CONTENT_FONT_SIZE,
+                    height: item.contentLines * LINE_HEIGHT,
                   }}
                 >
-                  <Image className="image" mode="widthFix" lazyLoad src={item.webformatURL} />
-                  <View className="content">
-                    <LikeOutlined />
-                    <InfoOutlined />
-                    {item.tagList.map(tag => (
-                      <Tag
-                        className="tag"
-                        style={{
-                          fontSize: CONTENT_FONT_SIZE,
-                          height: item.contentLines * LINE_HEIGHT,
-                        }}
-                      >
-                        {tag}
-                      </Tag>
-                    ))}
-                  </View>
+                  <InfoOutlined />
+                  {item.tagList.map(tag => (
+                    <Tag className="tag">{tag}</Tag>
+                  ))}
                 </View>
-              </Transition>
+              </View>
             ))}
         </View>
         <List.Placeholder>

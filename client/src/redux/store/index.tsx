@@ -1,13 +1,13 @@
-import { store } from 'foca'
-import { taroStorage } from 'foca-taro-storage'
+import { store } from 'foca';
+import { taroStorage } from 'foca-taro-storage';
 
-import { deviceInfoModel } from '../models/device/deviceInfoModel'
+import { deviceInfoModel } from '../models/device/deviceInfoModel';
 
 store.init({
   persist: [
     {
       key: 'wallpaper',
-      version: '1.0.0',
+      version: '1.0.1',
       engine: taroStorage,
       models: [deviceInfoModel],
     },

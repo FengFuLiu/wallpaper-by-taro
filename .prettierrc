@@ -3,7 +3,7 @@
   "jsxBracketSameLine": false,
   "singleQuote": true,
   "trailingComma": "es5",
-  "printWidth": 100,
+  "printWidth": 110,
   "arrowParens": "avoid",
   "endOfLine": "auto"
 }
