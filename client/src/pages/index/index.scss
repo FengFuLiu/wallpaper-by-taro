@@ -12,6 +12,15 @@
         border-radius: 8px;
         height: auto;
       }
+      .placeholder-logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 8px;
+        height: auto;
+        width: 100%;
+      }
       .content {
         background-color: #fff;
         width: 100%;

@@ -1,7 +1,7 @@
-import Taro from '@tarojs/taro'
-import { defineModel } from 'foca'
+import Taro from '@tarojs/taro';
+import { defineModel } from 'foca';
 
-import { deviceInfoModel } from '../device/deviceInfoModel'
+import { deviceInfoModel } from '../device/deviceInfoModel';
 
 export type IHit = {
   id: number;
@@ -45,41 +45,41 @@ export type RequestProps = {
   image_type: 'all' | 'photo' | 'illustration' | 'vector';
   orientation: 'all' | 'horizontal' | 'vertical';
   category:
-  | 'backgrounds'
-  | 'fashion'
-  | 'nature'
-  | 'science'
-  | 'education'
-  | 'feelings'
-  | 'health'
-  | 'people'
-  | 'religion'
-  | 'places'
-  | 'animals'
-  | 'industry'
-  | 'computer'
-  | 'food'
-  | 'sports'
-  | 'transportation'
-  | 'travel'
-  | 'buildings'
-  | 'business'
-  | 'music';
+    | 'backgrounds'
+    | 'fashion'
+    | 'nature'
+    | 'science'
+    | 'education'
+    | 'feelings'
+    | 'health'
+    | 'people'
+    | 'religion'
+    | 'places'
+    | 'animals'
+    | 'industry'
+    | 'computer'
+    | 'food'
+    | 'sports'
+    | 'transportation'
+    | 'travel'
+    | 'buildings'
+    | 'business'
+    | 'music';
   colors:
-  | 'grayscale'
-  | 'transparent'
-  | 'red'
-  | 'orange'
-  | 'yellow'
-  | 'green'
-  | 'turquoise'
-  | 'blue'
-  | 'lilac'
-  | 'pink'
-  | 'white'
-  | 'gray'
-  | 'black'
-  | 'brown';
+    | 'grayscale'
+    | 'transparent'
+    | 'red'
+    | 'orange'
+    | 'yellow'
+    | 'green'
+    | 'turquoise'
+    | 'blue'
+    | 'lilac'
+    | 'pink'
+    | 'white'
+    | 'gray'
+    | 'black'
+    | 'brown';
 };
 
 const initialState = {
@@ -129,7 +129,6 @@ export const pixabeyModel = defineModel('pixabey', {
           item.contentLines = Math.ceil(
             (String(item.tagList).length * CONTENT_FONT_SIZE) / item.masonryWidth
           );
-          console.log(item.masonryWidth, String(item.tagList).length, item.contentLines);
           const minHeightIndex = columnHeightList.findIndex(item => item === Math.min(...columnHeightList));
           item.top = columnHeightList[minHeightIndex];
           item.left = item.masonryWidth * minHeightIndex + PADDING_HORIZONTAL * (minHeightIndex + 1);
