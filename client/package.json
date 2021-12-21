@@ -38,6 +38,7 @@
     "@tarojs/react": "3.3.16",
     "@tarojs/runtime": "3.3.16",
     "@tarojs/taro": "3.3.16",
+    "ahooks": "^3.0.5",
     "axios": "^0.24.0",
     "foca": "^0.9.1",
     "foca-miniprogram-axios": "0.0.1",

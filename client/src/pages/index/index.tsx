@@ -1,12 +1,13 @@
 import './index.scss';
 
-import Taro, { pxTransform, usePageScroll } from '@tarojs/taro';
+import Taro, { usePageScroll } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { InfoOutlined, LikeOutlined } from '@taroify/icons';
 import { Button, Image, List, Loading, Popup, Search, Tag, Transition } from '@taroify/core';
 import { useLoading, useModel } from 'foca';
 import { useCallback, useEffect, useState } from 'react';
-import { throttle } from 'lodash';
+import { useThrottleFn } from 'ahooks';
+import LOGO from '../../images/logo.png';
 
 import {
   CONTENT_FONT_SIZE,
@@ -55,10 +56,10 @@ export default function Index() {
   const handleCardClick = (item: IHit) => {
     setCurrentCardInfo(item);
   };
-
-  const handleScrollBottom = useCallback(() => {
-    !isFirstRequest && updateParams({ page: (requestParams.page ?? 0) + 1 });
-  }, [isFirstRequest, requestParams.page]);
+  const { run: handleScrollBottom } = useThrottleFn(
+    () => !isFirstRequest && updateParams({ page: (requestParams.page ?? 0) + 1 }),
+    { wait: 2000 }
+  );
 
   useEffect(() => {
     pixabeyModel.getListInfo(requestParams);
@@ -76,24 +77,36 @@ export default function Index() {
           updateSearchVal('');
         }}
       />
-      <List
-        scrollTop={scrollTop}
-        loading={loading}
-        hasMore={hasMore}
-        onLoad={throttle(handleScrollBottom, 2000)}
-      >
+      <List scrollTop={scrollTop} loading={loading} hasMore={hasMore} onLoad={handleScrollBottom}>
         <View className="masonry" style={{ height: data.parentHeight }}>
           {Boolean(data.hits.length) &&
             data.hits.map(item => (
               <View
-                style={{ left: item.left, top: item.top, width: item.masonryWidth }}
+                style={{
+                  left: item.left,
+                  top: item.top,
+                  width: item.masonryWidth,
+                  minHeight: item.masonryHeight + item.contentLines * LINE_HEIGHT,
+                }}
                 className="item"
                 key={item.id}
                 onClick={() => {
                   handleCardClick(item);
                 }}
               >
-                <Image className="image" mode="widthFix" src={item.previewURL} />
+                <Image
+                  className="image"
+                  mode="widthFix"
+                  placeholder={
+                    <Image
+                      mode="widthFix"
+                      style={{ height: item.masonryHeight }}
+                      src={LOGO}
+                      className="placeholder-logo"
+                    />
+                  }
+                  src={item.previewURL}
+                />
                 <View
                   className="content"
                   style={{
@@ -101,7 +114,6 @@ export default function Index() {
                     height: item.contentLines * LINE_HEIGHT,
                   }}
                 >
-                  <InfoOutlined />
                   {item.tagList.map(tag => (
                     <Tag className="tag">{tag}</Tag>
                   ))}
