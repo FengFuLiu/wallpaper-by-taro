@@ -39,7 +39,7 @@
     "@tarojs/runtime": "3.3.16",
     "@tarojs/taro": "3.3.16",
     "axios": "^0.24.0",
-    "foca": "^0.6.0",
+    "foca": "^0.9.1",
     "foca-miniprogram-axios": "0.0.1",
     "foca-taro-storage": "0.0.2",
     "lodash": "4.17.15",
