@@ -116,7 +116,7 @@ export const pixabeyModel = defineModel('pixabey', {
 
       const { windowWidth } = deviceInfoModel.state;
 
-      this.dispatch(state => {
+      this.setState(state => {
         state.total = total;
         state.totalHits = totalHits;
         hits.forEach(item => {
