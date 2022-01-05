@@ -9,17 +9,23 @@
       border-radius: 8px;
       display: inline-block;
       .image {
-        border-radius: 8px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
         height: auto;
+        display: block;
+        background-color: #f8f9fa;
       }
       .placeholder-logo {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 8px;
-        height: auto;
-        width: 100%;
+        position: relative;
+        image {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 8px;
+          height: auto;
+          width: 100%;
+        }
       }
       .content {
         background-color: #fff;
@@ -27,8 +33,10 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap;
+        padding: 0 8px;
+        align-content: center;
         .tag {
-          margin-right: 4px;
+          margin-right: 8px;
         }
       }
     }

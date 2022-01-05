@@ -1,9 +1,9 @@
 import './index.scss';
 
-import Taro, { usePageScroll } from '@tarojs/taro';
+import Taro, { pxTransform, usePageScroll } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { InfoOutlined, LikeOutlined } from '@taroify/icons';
-import { Button, Image, List, Loading, Popup, Search, Tag, Transition } from '@taroify/core';
+import { Button, Image, List, Loading, Popup, Search, Sticky, Tag, Transition } from '@taroify/core';
 import { useLoading, useModel } from 'foca';
 import { useCallback, useEffect, useState } from 'react';
 import { useThrottleFn } from 'ahooks';
@@ -68,15 +68,17 @@ export default function Index() {
 
   return (
     <View className="basePage">
-      <Search
-        value={searchValue}
-        placeholder="输入想搜索的关键词"
-        onChange={e => setSearchValue(e.detail.value)}
-        onSearch={e => updateSearchVal(e.detail.value)}
-        onClear={() => {
-          updateSearchVal('');
-        }}
-      />
+      <Sticky>
+        <Search
+          value={searchValue}
+          placeholder="输入想搜索的关键词"
+          onChange={e => setSearchValue(e.detail.value)}
+          onSearch={e => updateSearchVal(e.detail.value)}
+          onClear={() => {
+            updateSearchVal('');
+          }}
+        />
+      </Sticky>
       <List scrollTop={scrollTop} loading={loading} hasMore={hasMore} onLoad={handleScrollBottom}>
         <View className="masonry" style={{ height: data.parentHeight }}>
           {Boolean(data.hits.length) &&
@@ -97,13 +99,11 @@ export default function Index() {
                 <Image
                   className="image"
                   mode="widthFix"
+                  style={{ minHeight: item.masonryHeight }}
                   placeholder={
-                    <Image
-                      mode="widthFix"
-                      style={{ height: item.masonryHeight }}
-                      src={LOGO}
-                      className="placeholder-logo"
-                    />
+                    <View className="placeholder-logo" style={{ height: item.masonryHeight }}>
+                      <Image style={{ height: item.masonryHeight }} mode="aspectFit" src={LOGO} />
+                    </View>
                   }
                   src={item.previewURL}
                 />
@@ -115,7 +115,9 @@ export default function Index() {
                   }}
                 >
                   {item.tagList.map(tag => (
-                    <Tag className="tag">{tag}</Tag>
+                    <Tag className="tag" style={{ marginBottom: item.contentLines > 1 ? pxTransform(8) : 0 }}>
+                      {tag}
+                    </Tag>
                   ))}
                 </View>
               </View>

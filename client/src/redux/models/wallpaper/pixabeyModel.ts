@@ -95,6 +95,7 @@ export const CONTENT_FONT_SIZE = 12;
 const PADDING_HORIZONTAL = 10;
 const PADDING_VERTICAL = 10;
 const MASONRY_COLUMN = 2;
+const TAG_PADDING_LEFT = 8; //标签之间的间隔
 let columnHeightList: number[] = new Array(MASONRY_COLUMN).fill(0); //2列
 
 export const pixabeyModel = defineModel('pixabey', {
@@ -127,7 +128,7 @@ export const pixabeyModel = defineModel('pixabey', {
           item.masonryHeight = Number((item.masonryWidth * scale).toFixed(2));
 
           item.contentLines = Math.ceil(
-            (String(item.tagList).length * CONTENT_FONT_SIZE) / item.masonryWidth
+            (String(item.tagList).length * CONTENT_FONT_SIZE) / (item.masonryWidth - 2 * TAG_PADDING_LEFT)
           );
           const minHeightIndex = columnHeightList.findIndex(item => item === Math.min(...columnHeightList));
           item.top = columnHeightList[minHeightIndex];
