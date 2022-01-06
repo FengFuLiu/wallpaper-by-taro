@@ -18,7 +18,7 @@ import {
 } from '../../redux/models/wallpaper/pixabeyModel';
 import { useBoolean } from '../../utils/hooks';
 
-export default function Index() {
+export default function Detail() {
   const data = useModel(pixabeyModel);
   const loading = useLoading(pixabeyModel.getListInfo);
   const [isFirstRequest, setIsFirstRequest] = useState(true);
