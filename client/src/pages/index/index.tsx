@@ -60,9 +60,7 @@ export default function Index() {
   const [isShowPopup, showPopup, hidePopup] = useBoolean(false);
   const [searchValue, setSearchValue] = useState('');
   const [currentCardInfo, setCurrentCardInfo] = useState<IHit>();
-  const [requestParams, setRequestParams] = useState<Partial<RequestProps>>({
-    page: 1,
-  });
+  const [requestParams, setRequestParams] = useState<Partial<RequestProps>>({});
   const [scrollTop, setScrollTop] = useState(0);
   usePageScroll(({ scrollTop: aScrollTop }) => setScrollTop(aScrollTop));
 
@@ -92,7 +90,7 @@ export default function Index() {
   );
 
   useEffect(() => {
-    if (requestParams.page === 1) return;
+    if ((requestParams?.page ?? 0) <= 1) return;
     hits.length === totalHits ? setHasMoreFalse() : setHasMoreTrue();
   }, [hits.length, totalHits, requestParams.page]);
 

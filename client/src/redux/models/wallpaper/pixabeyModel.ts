@@ -1,8 +1,6 @@
 import Taro from '@tarojs/taro';
 import { defineModel } from 'foca';
 
-import { deviceInfoModel } from '../device/deviceInfoModel';
-
 export type IHit = {
   id: number;
   pageURL: string;
@@ -97,6 +95,7 @@ const PADDING_VERTICAL = 10;
 const MASONRY_COLUMN = 2;
 const TAG_PADDING_LEFT = 8; //标签之间的间隔
 let columnHeightList: number[] = new Array(MASONRY_COLUMN).fill(0); //2列
+const { windowWidth = 375 } = Taro.getSystemInfoSync();
 
 export const pixabeyModel = defineModel('pixabey', {
   initialState,
@@ -114,8 +113,7 @@ export const pixabeyModel = defineModel('pixabey', {
       const isClearList = params.page === 1;
       if (isClearList) columnHeightList = new Array(MASONRY_COLUMN).fill(0);
 
-      const { windowWidth } = deviceInfoModel.state;
-
+      // const { windowWidth } = Taro.getSystemInfoSync();
       this.setState(state => {
         state.total = total;
         state.totalHits = totalHits;
@@ -130,7 +128,7 @@ export const pixabeyModel = defineModel('pixabey', {
           item.contentLines = Math.ceil(
             (String(item.tagList).length * CONTENT_FONT_SIZE) / (item.masonryWidth - 2 * TAG_PADDING_LEFT)
           );
-          const minHeightIndex = columnHeightList.findIndex(item => item === Math.min(...columnHeightList));
+          const minHeightIndex = columnHeightList.findIndex(el => el === Math.min(...columnHeightList));
           item.top = columnHeightList[minHeightIndex];
           item.left = item.masonryWidth * minHeightIndex + PADDING_HORIZONTAL * (minHeightIndex + 1);
 
