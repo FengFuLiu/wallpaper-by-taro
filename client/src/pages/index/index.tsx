@@ -1,7 +1,7 @@
 import './index.scss';
 
 import Taro, { pxTransform, usePageScroll, useReady } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { Ad, View } from '@tarojs/components';
 import { Image, List, Loading, Popup, Search, Sticky, Tag } from '@taroify/core';
 import { useLoading, useModel } from 'foca';
 import { useCallback, useEffect, useState } from 'react';
@@ -90,9 +90,9 @@ export default function Index() {
   );
 
   useEffect(() => {
-    if ((requestParams?.page ?? 0) <= 1) return;
+    if ((requestParams?.page ?? 0) <= 1 || loading) return;
     hits.length === totalHits ? setHasMoreFalse() : setHasMoreTrue();
-  }, [hits.length, totalHits, requestParams.page]);
+  }, [hits.length, totalHits, requestParams.page, loading]);
 
   const handleCardClick = (item: IHit) => {
     setCurrentCardInfo(item);
@@ -189,7 +189,7 @@ export default function Index() {
           {!hasMore && '没有更多了'}
         </List.Placeholder>
       </List>
-      <Popup open={isShowPopup} rounded placement="bottom" style={{ height: '30%' }}></Popup>
+      <Ad unitId="adunit-bca50c7f1fad21bc" adIntervals={30} />
     </View>
   );
 }
