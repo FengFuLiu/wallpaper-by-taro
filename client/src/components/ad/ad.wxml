@@ -1,0 +1,1 @@
+<ad-custom unit-id="{{test}}" ad-intervals="30" binderror="{{handleError}}"></ad-custom>

@@ -1,19 +1,8 @@
 import './index.scss';
 
 import Taro, { pxTransform, usePageScroll, useReady, useShareAppMessage } from '@tarojs/taro';
-import { Ad, Button, View } from '@tarojs/components';
-import {
-  Image,
-  List,
-  Loading,
-  NoticeBar,
-  Popup,
-  Search,
-  Skeleton,
-  Sticky,
-  Tag,
-  WhiteSpace,
-} from '@taroify/core';
+import { Button, View } from '@tarojs/components';
+import { Image, List, Loading, NoticeBar, Search, Skeleton, Sticky, Tag, WhiteSpace } from '@taroify/core';
 import { useLoading, useModel } from 'foca';
 import { useCallback, useEffect, useState } from 'react';
 import { useThrottleFn } from 'ahooks';
@@ -68,7 +57,6 @@ export default function Index() {
   const loading = useLoading(pixabeyModel.getListInfo);
   const [isFirstRequest, setIsFirstRequest] = useState(true);
   const [hasMore, setHasMoreTrue, setHasMoreFalse] = useBoolean(true);
-  const [isShowPopup, showPopup, hidePopup] = useBoolean(false);
   const [searchValue, setSearchValue] = useState('');
   const [currentCardInfo, setCurrentCardInfo] = useState<IHit>();
   const [requestParams, setRequestParams] = useState<Partial<RequestProps>>({});
@@ -105,8 +93,8 @@ export default function Index() {
 
   useEffect(() => {
     if ((requestParams?.page ?? 0) <= 1 || loading) return;
-    hits.length === totalHits ? setHasMoreFalse() : setHasMoreTrue();
-  }, [hits.length, totalHits, requestParams.page, loading]);
+    hits.length >= totalHits ? setHasMoreFalse() : setHasMoreTrue();
+  }, [hits, totalHits, requestParams.page, loading]);
 
   const handleCardClick = (item: IHit) => {
     setCurrentCardInfo(item);
@@ -175,39 +163,46 @@ export default function Index() {
                   handleCardClick(item);
                 }}
               >
-                <Image
-                  className="image"
-                  onClick={() => {
-                    previewImages(item.largeImageURL);
-                  }}
-                  mode="widthFix"
-                  style={{ minHeight: item.masonryHeight }}
-                  placeholder={
-                    <View className="placeholder-logo" style={{ height: item.masonryHeight }}>
-                      <Image style={{ height: item.masonryHeight }} mode="aspectFit" src={LOGO} />
-                    </View>
-                  }
-                  src={item.previewURL}
-                />
-                <View
-                  className="content"
-                  style={{
-                    fontSize: CONTENT_FONT_SIZE,
-                    height: item.contentLines * LINE_HEIGHT,
-                  }}
-                >
-                  {item.tagList.map(tag => (
-                    <Tag
-                      className="tag"
+                {!item?.isAD ? (
+                  <>
+                    <Image
+                      className="image"
                       onClick={() => {
-                        handleTagClick(tag);
+                        previewImages(item.largeImageURL);
                       }}
-                      style={{ marginBottom: item.contentLines > 1 ? pxTransform(8) : 0 }}
+                      mode="widthFix"
+                      style={{ minHeight: item.masonryHeight }}
+                      placeholder={
+                        <View className="placeholder-logo" style={{ height: item.masonryHeight }}>
+                          <Image style={{ height: item.masonryHeight }} mode="aspectFit" src={LOGO} />
+                        </View>
+                      }
+                      src={item.previewURL}
+                    />
+                    <View
+                      className="content"
+                      style={{
+                        fontSize: CONTENT_FONT_SIZE,
+                        height: item.contentLines * LINE_HEIGHT,
+                      }}
                     >
-                      {tag}
-                    </Tag>
-                  ))}
-                </View>
+                      {item.tagList.map(tag => (
+                        <Tag
+                          className="tag"
+                          onClick={() => {
+                            handleTagClick(tag);
+                          }}
+                          style={{ marginBottom: item.contentLines > 1 ? pxTransform(8) : 0 }}
+                        >
+                          {tag}
+                        </Tag>
+                      ))}
+                    </View>
+                  </>
+                ) : (
+                  // @ts-expect-error
+                  <ad test={'adunit-922fa483c377b63c'} />
+                )}
               </View>
             ))
           ) : (
@@ -228,7 +223,6 @@ export default function Index() {
           {!hasMore && '没有更多了'}
         </List.Placeholder>
       </List>
-      <Ad unitId="adunit-bca50c7f1fad21bc" adIntervals={30} />
     </View>
   );
 }

@@ -30,6 +30,8 @@ export type IHit = {
   masonryHeight: number;
   masonryWidth: number;
   contentLines: number;
+  isAD: boolean;
+  adId: string;
 };
 export interface PixabeyResponse {
   total: number;
@@ -97,6 +99,8 @@ const TAG_PADDING_LEFT = 8; //标签之间的间隔
 let columnHeightList: number[] = new Array(MASONRY_COLUMN).fill(0); //2列
 const { windowWidth = 375 } = Taro.getSystemInfoSync();
 
+const adID = ['adunit-922fa483c377b63c', 'adunit-ab36eacce8876258', 'adunit-b7969e0a1475e613', 'adunit-f986a9285af12234', 'adunit-8f111c8165edac5f', 'adunit-056adc116c7acc7d', 'adunit-d490a4cb82f1d10a']
+
 export const pixabeyModel = defineModel('pixabey', {
   initialState,
   effects: {
@@ -109,16 +113,54 @@ export const pixabeyModel = defineModel('pixabey', {
         },
       });
       const { hits, total, totalHits } = res.result as PixabeyResponse;
+      const adItem: IHit = {
+        isAD: true,
+        id: 0,
+        adId: adID[Math.floor(Math.random() * adID.length)],
+        pageURL: '',
+        type: '',
+        tags: '',
+        tagList: [],
+        previewURL: '',
+        previewWidth: 0,
+        previewHeight: 0,
+        webformatURL: '',
+        webformatWidth: 104,
+        webformatHeight: 60,
+        largeImageURL: '',
+        imageWidth: 0,
+        imageHeight: 0,
+        imageSize: 0,
+        views: 0,
+        downloads: 0,
+        collections: 0,
+        likes: 0,
+        comments: 0,
+        user_id: 0,
+        user: '',
+        userImageURL: '',
+        top: 0,
+        left: 0,
+        masonryHeight: 0,
+        masonryWidth: 0,
+        contentLines: 1
+      }
 
       const isClearList = params.page === 1;
       if (isClearList) columnHeightList = new Array(MASONRY_COLUMN).fill(0);
 
       this.setState(state => {
-        state.total = total;
-        state.totalHits = totalHits;
+        if (hits.length && (params?.page ?? 1) % 2 === 1) {
+          state.total = total + 1;
+          state.totalHits = totalHits + 1;
+          hits.push(adItem);
+        } else {
+          state.total = total;
+          state.totalHits = totalHits;
+        }
+
         hits.forEach(item => {
           item.previewURL = item.previewURL.replace('_150', '__340');
-
           item.tagList = item.tags.split(',').map(tag => tag.trim());
           item.masonryWidth = Number(((windowWidth - PADDING_HORIZONTAL * 3) / MASONRY_COLUMN).toFixed(2));
           const scale = item.webformatHeight / item.webformatWidth;
@@ -141,6 +183,7 @@ export const pixabeyModel = defineModel('pixabey', {
           );
           columnHeightList[minHeightIndex] = increasedHeightVal;
         });
+
         state.hits = isClearList ? hits : [...state.hits, ...hits];
         state.parentHeight = Math.max(...columnHeightList);
       });
