@@ -43,3 +43,15 @@
     }
   }
 }
+.skeleton {
+  padding: var(--search-padding, 20rpx var(--padding-sm, 24rpx));
+}
+.notice {
+  padding: var(--notice-bar-padding, 0 var(--padding-md, 32rpx));
+  background-color: var(--notice-bar-background-color, var(--orange-light, #fffbe8));
+  font-size: var(--notice-bar-font-size, var(--font-size-md, 28rpx));
+  line-height: var(--notice-bar-line-height, 48rpx);
+  color: var(--notice-bar-text-color, var(--orange-dark, #ed6a0c));
+  align-items: center;
+  width: 100%;
+}
