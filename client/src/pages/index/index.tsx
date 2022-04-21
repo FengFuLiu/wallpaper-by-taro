@@ -5,6 +5,7 @@ import { Button, View } from '@tarojs/components';
 import { Image, List, Loading, NoticeBar, Search, Skeleton, Sticky, Tag, WhiteSpace } from '@taroify/core';
 import { useLoading, useModel } from 'foca';
 import { useCallback, useEffect, useState } from 'react';
+import FloatTool from '../../components/float-tool';
 import { useThrottleFn } from 'ahooks';
 import LOGO from '../../images/logo.png';
 
@@ -120,6 +121,12 @@ export default function Index() {
     });
   }, [requestParams]);
 
+  const handleRedirectMiniProgramClick = useCallback(() => {
+    Taro.navigateToMiniProgram({
+      appId: 'wxe3a0fd96c549b0fa',
+    });
+  }, []);
+
   const previewImages = useCallback((url: string) => {
     Taro.previewImage({
       current: url,
@@ -145,7 +152,7 @@ export default function Index() {
           }}
         />
       </Sticky>
-
+      <FloatTool onClick={handleRedirectMiniProgramClick} title="一键拼图" />
       <List scrollTop={scrollTop} loading={loading} hasMore={hasMore} onLoad={handleScrollBottom}>
         <View className="masonry" style={{ height: data.parentHeight }}>
           {Boolean(data.hits.length) ? (
